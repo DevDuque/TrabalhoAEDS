@@ -41,7 +41,7 @@ void inserirAluno(alunoX *listaAlunos[30], int *quantidadeAlunos) {
     }
 
     // Subindo ID automaticamente
-    int id = 1;
+    static int id = 1;
     novoAluno->id = id++;
 
     printf("Entre o nome do aluno: ");
