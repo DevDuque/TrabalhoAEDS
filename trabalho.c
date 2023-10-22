@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // Estrutura básica de Aluno
 struct Aluno {
@@ -16,11 +17,63 @@ typedef struct Aluno alunoX;
 // Fazendo um array de ponteiros para a estrutura
 alunoX *listaAlunos[30];
 
+/* Protótipos*/
+void instructions(void);
+void inserirAluno(alunoX *listaAlunos[30], int *quantidadeAlunos);
+void imprimirAluno(alunoX *listaAlunos[30], int quantidadeAlunos);
+void buscarAluno(alunoX *listaAlunos[30], int quantidadeAlunos);
+int isEmpty(int quantidadeAlunos);
+
+
+// Main do Programa
+int main() {
+    int escolha;
+    // Inicializando as variáveis para evitar bugs na hora de chamar as funções
+    int quantidadeAlunos = 0;
+    alunoX *listaAlunos[30] = {NULL};
+
+    do {
+        instructions();
+        scanf("%d", &escolha);
+
+        switch (escolha) {
+            case 1:
+                // QuantidadeAlunos como ponteiro para aumentar também dentro da função de inserir e não só nossa variável no main
+                inserirAluno(listaAlunos, &quantidadeAlunos);
+                break;
+            
+            case 2:
+                if(!isEmpty(quantidadeAlunos)){ // Se a lista não estiver vazia, realiza a função
+                    imprimirAluno(listaAlunos, quantidadeAlunos);
+                } else {
+                    printf("A lista de alunos esta vazia! \n"); // Mensagem caso a lista esteja vazia.
+                }
+                break;
+            case 3:
+                if(!isEmpty(quantidadeAlunos)){ // Se a lista não estiver vazia, realiza a função
+                    buscarAluno(listaAlunos, quantidadeAlunos);
+                } else {
+                    printf("A lista de alunos esta vazia! \n"); // Mensagem caso a lista esteja vazia.
+                }
+                break;
+        }
+    } while (escolha != 0);
+
+    // Liberar a memória alocada para os alunos antes de sair do programa
+    for (int i = 0; i < quantidadeAlunos; i++) {
+        free(listaAlunos[i]);
+    }
+
+    return 0;
+}
+
+
 // Opções de programa
 void instructions(void) {
     printf("Digite sua escolha:\n"
            "[1] Inserir um aluno\n"
            "[2] Imprimir a lista de alunos\n"
+           "[3] Buscar um aluno\n"
            "[0] Sair\n");
 }
 
@@ -76,32 +129,44 @@ void imprimirAluno(alunoX *listaAlunos[30], int quantidadeAlunos) {
     }
 }
 
-int main() {
-    int escolha;
-    // Inicializando as variáveis para evitar bugs na hora de chamar as funções
-    int quantidadeAlunos = 0;
-    alunoX *listaAlunos[30] = {NULL};
+// Função para buscar o aluno atravéz do nome e sobrenome
 
-    do {
-        instructions();
-        scanf("%d", &escolha);
+void buscarAluno(alunoX *listaAlunos[30], int quantidadeAlunos){
+    char nome[30];
+    char sobrenome[30];
 
-        switch (escolha) {
-            case 1:
-                // QuantidadeAlunos como ponteiro para aumentar também dentro da função de inserir e não só nossa variável no main
-                inserirAluno(listaAlunos, &quantidadeAlunos);
-            break;
-            
-            case 2:
-                imprimirAluno(listaAlunos, quantidadeAlunos);
-            break;
+    
+    printf("Digite o nome do aluno que deseja buscar: ");
+    scanf("%s", &nome); // Nome que o usuário deseja buscar
+
+    printf("Digite o sobrenome do aluno que deseja buscar: ");
+    scanf("%s", &sobrenome); // Sobrenome que o usuário deseja buscar
+
+    // looping pela lista até encontrar algum aluno que seja igual ao nome e sobrenome digitados pelo usuário
+    for(int i = 0; i < quantidadeAlunos; i++){
+
+        // Caso encontre o aluno buscado, realiza a sua impressão
+        if(strcmp(listaAlunos[i]->nome, nome) == 0 && strcmp(listaAlunos[i]->sobrenome, sobrenome) == 0){
+            printf("Aluno encontrado!\n");
+            printf("------------------------------\n");
+            printf("ID: %d\n", listaAlunos[i]->id);
+            printf("Nome: %s %s\n", listaAlunos[i]->nome, listaAlunos[i]->sobrenome);
+            printf("Curso: %s\n", listaAlunos[i]->curso);
+            printf("Nota: %.2lf\n", listaAlunos[i]->nota);
+            printf("Presença: %.2lf\n", listaAlunos[i]->presencaP);
+            printf("------------------------------\n");
+            return; // Sai da função após encontrar o aluno desejado
         }
-    } while (escolha != 0);
 
-    // Liberar a memória alocada para os alunos antes de sair do programa
-    for (int i = 0; i < quantidadeAlunos; i++) {
-        free(listaAlunos[i]);
     }
 
-    return 0;
-}
+    printf("Aluno(a) %s %s não encontrado! \n", nome, sobrenome); // Caso não encontre o aluno, essa mensagem será exibida.
+
+    
+} /* FIM DA FUNÇÃO BUSCAR ALUNO */
+
+// Função para verificar se a lista está vazia
+int isEmpty(int quantidadeAlunos){
+
+    return quantidadeAlunos == 0;
+}  /* FIM DA FUNÇÃO ISEMPTY */
