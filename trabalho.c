@@ -53,7 +53,7 @@ void inserirNota(alunoX *listaAlunos[30], int quantidadeAlunos) {
     scanf("%d", &idAluno);
 
     if (idAluno == 0) {
-        printf("Operação cancelada.\n");
+        printf("Operacao cancelada.\n");
         return;
     }
 
@@ -100,43 +100,34 @@ void inserirNota(alunoX *listaAlunos[30], int quantidadeAlunos) {
     }
 
     if (!alunoEncontrado) {
-        printf("Aluno com ID %d não encontrado.\n", idAluno);
+        printf("Aluno com ID %d nao encontrado.\n", idAluno);
     }
 }
 
 void imprimirAluno(alunoX *listaAlunos[30], int quantidadeAlunos) {
-    printf("-------------------------------------------------------------------------------------------\n");
-    printf("| %-4s | %-20s | %-15s | %-15s | %-8s |\n", "ID", "Nome", "Sobrenome", "Curso", "Presenca");
-    printf("-------------------------------------------------------------------------------------------\n");
 
-    for(int i = 0; i < quantidadeAlunos; i++) {
-        printf("| %-4d | %-20s | %-15s | %-15s | %-8.2lf |\n", listaAlunos[i]->id, listaAlunos[i]->nome,
-               listaAlunos[i]->sobrenome, listaAlunos[i]->curso, listaAlunos[i]->presencaP);
-    }
-
-    printf("---------------------------------------------------------------------------------------------\n");
-}
-
-void imprimirNota(alunoX *listaAlunos[30], int quantidadeAlunos) {
-    printf("-------------------------------------------------------------------------------------------\n");
-    printf("| %-4s | %-20s | %-15s | %-15s | %-10s | %-10s |\n", "ID", "Nome", "Sobrenome", "Curso", "Nota Total", "Nota Media");
-    printf("-------------------------------------------------------------------------------------------\n");
+    printf("-----------------------------------------------------------------------------------------------------------------------------\n");
+    printf("| %-4s | %-20s | %-15s | %-15s | %-10s | %-10s | %-10s |\n", "ID", "Nome", "Sobrenome", "Curso", "Presenca", "Nota Total", "Nota Media");
+    printf("-----------------------------------------------------------------------------------------------------------------------------\n");
 
     for(int i = 0; i < quantidadeAlunos; i++) {
         printf("| %-4d | %-20s | %-15s | %-15s | %-10.2lf |", 
         listaAlunos[i]->id, 
         listaAlunos[i]->nome, listaAlunos[i]->sobrenome,
         listaAlunos[i]->curso, 
-        listaAlunos[i]->notaTotal);
+        listaAlunos[i]->presencaP);
+
         
-        if (listaAlunos[i]->quantidadeNotas > 0) {
+        if (listaAlunos[i]->notaTotal > 0) {
+            printf(" %-10.2lf |", listaAlunos[i]->notaTotal);
             printf(" %-10.2lf |\n", listaAlunos[i]->notaTotal / listaAlunos[i]->quantidadeNotas);
         } else {
+            printf(" %-10s |", "N/A");
             printf(" %-10s |\n", "N/A");
         }
     }
 
-    printf("---------------------------------------------------------------------------------------------\n");
+    printf("-----------------------------------------------------------------------------------------------------------------------------\n");
 }
 
 void buscarAluno(alunoX *listaAlunos[30], int quantidadeAlunos){
@@ -228,10 +219,9 @@ int main() {
     do {
         printf("Digite sua escolha:\n"
            "[1] Inserir um aluno\n"
-           "[2] Imprimir a lista de alunos\n"
+           "[2] Imprimir a lista de alunos e Notas\n"
            "[3] Buscar um aluno\n"
            "[4] Inserir notas\n"
-           "[5] Visualizar notas\n"
            "[0] Sair\n");
         scanf("%d", &escolha);
 
@@ -259,14 +249,6 @@ int main() {
             case 4:
                 if(!isEmpty(quantidadeAlunos)) {
                     inserirNota(listaAlunos, quantidadeAlunos);
-                } else {
-                    printf("A lista de alunos esta vazia! \n");
-                }
-            break;
-
-            case 5:
-                if(!isEmpty(quantidadeAlunos)) {
-                    imprimirNota(listaAlunos, quantidadeAlunos);
                 } else {
                     printf("A lista de alunos esta vazia! \n");
                 }
