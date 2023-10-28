@@ -25,6 +25,15 @@ struct Aluno {
 
 typedef struct Aluno alunoX;
 
+// Coloquei todos pra evitar erro de qualquer um
+void inserirAluno(alunoX *listaAlunos[30], int *quantidadeAlunos);
+void inserirNota(alunoX *listaAlunos[30], int quantidadeAlunos);
+void imprimirAluno(alunoX *listaAlunos[30], int quantidadeAlunos);
+void buscarAluno(alunoX *listaAlunos[30], int quantidadeAlunos);
+void OrdemNotas(alunoX *listaAlunos[30], int quantidadeAlunos);
+int isEmpty(int quantidadeAlunos);
+
+
 void inserirAluno(alunoX *listaAlunos[30], int *quantidadeAlunos) {
     // Espaço de 30 na lista de alunos
     if (*quantidadeAlunos >= 30) {
@@ -252,6 +261,30 @@ int isEmpty(int quantidadeAlunos){
     return quantidadeAlunos == 0;
 }
 
+// Fiz a ordem mais nao testei
+void OrdemNotas(alunoX *listaAlunos[30], int quantidadeAlunos){
+
+    int maior, aux;
+
+    for(int i = 0; i < quantidadeAlunos - 1; i++){
+        maior = i;
+        for(int j = i + 1; j < quantidadeAlunos; j++){
+            if(listaAlunos[maior]->notaTotal < listaAlunos[j]->notaTotal){
+                maior = listaAlunos[j]->notaTotal;
+            }
+        }
+        if(i != maior){
+            aux = listaAlunos[i]->notaTotal;
+            listaAlunos[i]->notaTotal = maior;
+            listaAlunos[maior]->notaTotal = aux;
+        }
+    }
+
+    printf("Tabela dos alunos pela sua situação: \n");
+    imprimirAluno(listaAlunos, quantidadeAlunos);
+}
+
+
 int main() {
     int escolha;
     int quantidadeAlunos = 0;
@@ -263,6 +296,7 @@ int main() {
            "[2] Imprimir a lista de alunos e Notas\n"
            "[3] Buscar um aluno\n"
            "[4] Inserir notas\n"
+           "[5] Situação dos alunos \n" // fiz a alternativa
            "[0] Sair\n");
         scanf("%d", &escolha);
 
@@ -290,6 +324,12 @@ int main() {
             case 4:
                 if(!isEmpty(quantidadeAlunos)) {
                     inserirNota(listaAlunos, quantidadeAlunos);
+                } else {
+                    printf("A lista de alunos esta vazia! \n");
+                }
+            case 5:
+                if(!isEmpty(quantidadeAlunos)) {
+                    OrdemNotas(listaAlunos, quantidadeAlunos); // Fiz o case 5
                 } else {
                     printf("A lista de alunos esta vazia! \n");
                 }
