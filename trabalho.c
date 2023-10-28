@@ -35,6 +35,8 @@ int isEmpty(int quantidadeAlunos);
 
 
 void inserirAluno(alunoX *listaAlunos[30], int *quantidadeAlunos) {
+    
+
     // Espaço de 30 na lista de alunos
     if (*quantidadeAlunos >= 30) {
         printf("Erro: Não há espaço para adicionar mais alunos.\n");
@@ -47,6 +49,8 @@ void inserirAluno(alunoX *listaAlunos[30], int *quantidadeAlunos) {
         printf("Erro: Não foi possível alocar memória para o aluno.\n");
         exit(1);
     }
+
+    novoAluno->quantidadeNotas = 0;
 
     // Static para começar com 1 e incrementar automaticamente
     static int id = 1;
@@ -69,6 +73,8 @@ void inserirAluno(alunoX *listaAlunos[30], int *quantidadeAlunos) {
     
     // Incrementando para próxima vez que chamar a função
     (*quantidadeAlunos)++;
+
+    
 }
 
 void inserirNota(alunoX *listaAlunos[30], int quantidadeAlunos) {
@@ -262,27 +268,26 @@ int isEmpty(int quantidadeAlunos){
 }
 
 // Fiz a ordem mais nao testei
-void OrdemNotas(alunoX *listaAlunos[30], int quantidadeAlunos){
-
-    int maior, aux;
-
-    for(int i = 0; i < quantidadeAlunos - 1; i++){
-        maior = i;
-        for(int j = i + 1; j < quantidadeAlunos; j++){
-            if(listaAlunos[maior]->notaTotal < listaAlunos[j]->notaTotal){
-                maior = listaAlunos[j]->notaTotal;
+void OrdemNotas(alunoX *listaAlunos[30], int quantidadeAlunos) {
+    for (int i = 0; i < quantidadeAlunos - 1; i++) {
+        int maior = i;
+        for (int j = i + 1; j < quantidadeAlunos; j++) {
+            if (listaAlunos[j]->notaTotal > listaAlunos[maior]->notaTotal) {
+                maior = j;
             }
         }
-        if(i != maior){
-            aux = listaAlunos[i]->notaTotal;
-            listaAlunos[i]->notaTotal = maior;
-            listaAlunos[maior]->notaTotal = aux;
+        if (i != maior) {
+            // Troca os ponteiros para os alunos, não as notas
+            alunoX *temp = listaAlunos[i];
+            listaAlunos[i] = listaAlunos[maior];
+            listaAlunos[maior] = temp;
         }
     }
 
     printf("Tabela dos alunos pela sua situação: \n");
     imprimirAluno(listaAlunos, quantidadeAlunos);
 }
+
 
 
 int main() {
@@ -327,6 +332,8 @@ int main() {
                 } else {
                     printf("A lista de alunos esta vazia! \n");
                 }
+            break;
+            
             case 5:
                 if(!isEmpty(quantidadeAlunos)) {
                     OrdemNotas(listaAlunos, quantidadeAlunos); // Fiz o case 5
