@@ -288,6 +288,11 @@ void OrdemNotas(alunoX *listaAlunos[30], int quantidadeAlunos) {
         }
     }
 
+    // Atualizar os IDs com base na classificação das notas (ordem decrescente)
+    for (int i = 0; i < quantidadeAlunos; i++) {
+        copiaAlunos[i]->id = i + 1;
+    }
+
     // Imprimir a tabela dos alunos ordenada por notas em ordem decrescente
     printf("Tabela dos alunos ordenada por notas em ordem decrescente: \n");
     imprimirAluno(copiaAlunos, quantidadeAlunos);
