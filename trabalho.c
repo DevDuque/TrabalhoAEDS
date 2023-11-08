@@ -6,13 +6,15 @@ int main() {
     alunoX *listaAlunos[30] = {NULL};
 
     do {
-        printf("Digite sua escolha:\n"
-           "[1] Inserir um aluno\n"
-           "[2] Imprimir a lista de alunos e Notas\n"
-           "[3] Buscar um aluno\n"
-           "[4] Inserir notas\n"
-           "[5] Situacao dos alunos \n" // fiz a alternativa
-           "[0] Sair\n");
+        printf("\n\033[1;34m============================ MENU PRINCIPAL ============================\033[0m\n");
+        printf("\033[1;36m[1]\033[0m Inserir um aluno\n");
+        printf("\033[1;36m[2]\033[0m Imprimir a lista\n");
+        printf("\033[1;36m[3]\033[0m Buscar um aluno\n");
+        printf("\033[1;36m[4]\033[0m Inserir notas\n");
+        printf("\033[1;36m[5]\033[0m Situacao dos alunos\n");
+        printf("\033[1;36m[6]\033[0m Importar lista\n");
+        printf("\033[1;36m[7]\033[0m Exportar lista\n");
+        printf("\033[1;31m[0]\033[0m Sair do programa\n");
         scanf("%d", &escolha);
 
         switch (escolha) {
@@ -46,7 +48,19 @@ int main() {
             
             case 5:
                 if(!isEmpty(quantidadeAlunos)) {
-                    OrdemNotas(listaAlunos, quantidadeAlunos); // Fiz o case 5
+                    OrdemNotas(listaAlunos, quantidadeAlunos);
+                } else {
+                    printf("A lista de alunos esta vazia! \n");
+                }
+            break;
+
+            case 6:
+                    importarCSV(listaAlunos, &quantidadeAlunos);
+            break;
+
+            case 7: 
+                if(!isEmpty(quantidadeAlunos)) {
+                    exportarCSV(listaAlunos, quantidadeAlunos);
                 } else {
                     printf("A lista de alunos esta vazia! \n");
                 }

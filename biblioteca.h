@@ -297,3 +297,56 @@ void OrdemNotas(alunoX *listaAlunos[30], int quantidadeAlunos) {
     printf("Tabela dos alunos ordenada por notas em ordem decrescente: \n");
     imprimirAluno(copiaAlunos, quantidadeAlunos);
 }
+
+void importarCSV(alunoX *listaAlunos[30], int *quantidadeAlunos) {
+    FILE *arquivo;
+    arquivo = fopen("alunos.csv", "r");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo CSV.\n");
+        return;
+    }
+
+    // Ler os dados do arquivo CSV e adicionar alunos à lista
+    while (*quantidadeAlunos < 30 && fscanf(arquivo, "%d,%29[^,],%29[^,],%49[^,],%lf,%lf,%d\n", 
+           &listaAlunos[*quantidadeAlunos]->id, listaAlunos[*quantidadeAlunos]->nome, 
+           listaAlunos[*quantidadeAlunos]->sobrenome, listaAlunos[*quantidadeAlunos]->curso, 
+           &listaAlunos[*quantidadeAlunos]->presencaP, &listaAlunos[*quantidadeAlunos]->notaTotal, 
+           &listaAlunos[*quantidadeAlunos]->quantidadeNotas) == 7) {
+        
+        // Aloca memória para um novo alunoX
+        listaAlunos[*quantidadeAlunos] = malloc(sizeof(alunoX));
+
+        // Verifica se a alocação de memória foi bem-sucedida
+        if (listaAlunos[*quantidadeAlunos] == NULL) {
+            printf("Erro ao alocar memória para o aluno.\n");
+            fclose(arquivo);
+            return;
+        }
+
+        (*quantidadeAlunos)++;
+    }
+
+    fclose(arquivo);
+}
+
+
+
+void exportarCSV(alunoX *listaAlunos[30], int quantidadeAlunos) {
+    FILE *arquivo;
+    arquivo = fopen("alunos.csv", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao criar o arquivo CSV.\n");
+        return;
+    }
+
+    // Escrever os dados dos alunos no arquivo CSV
+    for (int i = 0; i < quantidadeAlunos; i++) {
+        fprintf(arquivo, "%d,%s,%s,%s,%.2lf,%.2lf,%d\n", listaAlunos[i]->id, listaAlunos[i]->nome, 
+                listaAlunos[i]->sobrenome, listaAlunos[i]->curso, listaAlunos[i]->presencaP, 
+                listaAlunos[i]->notaTotal, listaAlunos[i]->quantidadeNotas);
+    }
+
+    fclose(arquivo);
+
+    printf("Arquivo criado com sucesso! \n");
+}
