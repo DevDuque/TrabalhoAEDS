@@ -10,7 +10,7 @@ int main() {
         printf("\033[1;36m[1]\033[0m Inserir um aluno\n");
         printf("\033[1;36m[2]\033[0m Imprimir a lista\n");
         printf("\033[1;36m[3]\033[0m Buscar um aluno\n");
-        printf("\033[1;36m[4]\033[0m Inserir notas\n");
+        printf("\033[1;36m[4]\033[0m Atualizar notas\n");
         printf("\033[1;36m[5]\033[0m Situacao dos alunos\n");
         printf("\033[1;36m[6]\033[0m Importar lista\n");
         printf("\033[1;36m[7]\033[0m Exportar lista\n");
