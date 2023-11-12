@@ -40,6 +40,9 @@ void imprimirAluno(alunoX *listaAlunos[30], int quantidadeAlunos);
 void buscarAluno(alunoX *listaAlunos[30], int quantidadeAlunos);
 void OrdemNotas(alunoX *listaAlunos[30], int quantidadeAlunos);
 int isEmpty(int quantidadeAlunos);
+void importarCSV(alunoX *listaAlunos[30], int *quantidadeAlunos);
+void exportarCSV(alunoX *listaAlunos[30], int quantidadeAlunos);
+
 
 void inserirAluno(alunoX *listaAlunos[30], int *quantidadeAlunos) { 
     // Espaço de 30 na lista de alunos
@@ -72,15 +75,11 @@ void inserirAluno(alunoX *listaAlunos[30], int *quantidadeAlunos) {
     printf("Entre a presenca do aluno: ");
     scanf("%lf", &novoAluno->presencaP);
 
-
-
     // Alocando os dados inseridos para posição quantidadeAlunos
     listaAlunos[*quantidadeAlunos] = novoAluno;
     
     // Incrementando para próxima vez que chamar a função
     (*quantidadeAlunos)++;
-
-    
 }
 
 void inserirNota(alunoX *listaAlunos[30], int quantidadeAlunos) {
@@ -303,7 +302,6 @@ void OrdemNotas(alunoX *listaAlunos[30], int quantidadeAlunos) {
 
     // Atualizar os IDs com base na classificação das notas (ordem decrescente) REMOVIDO
     
-
     // Imprimir a tabela dos alunos ordenada por notas em ordem decrescente
     printf("Tabela dos alunos ordenada por notas em ordem decrescente: \n");
     // Formatando como tabela
@@ -326,7 +324,7 @@ void OrdemNotas(alunoX *listaAlunos[30], int quantidadeAlunos) {
             if(copiaAlunos[i]->notaTotal < 60){ // Verficando a situação do aluno pela sua nota total
                 printf(" %-15s |\n", "Insatifatoria");
             } else {
-                printf(" %-15s |\n", "Satisfatoria");
+                printf(" %-15s %-2.2lf |\n", "Satisfatoria", copiaAlunos[i]->notaTotal / copiaAlunos[i]->quantidadeNotas);
             }
         } else {
             printf(" %-15s |", "N/A"); // Usando um traço para indicar notas não disponíveis
@@ -337,6 +335,17 @@ void OrdemNotas(alunoX *listaAlunos[30], int quantidadeAlunos) {
     printf("--------------------------------------------------------------------------------------------------------------------------\n");
 }
 
+// Função para conferir se o ID já existe na lista
+int alunoEstaNaLista(alunoX *listaAlunos[30], int quantidadeAlunos, int id) {
+    for (int i = 0; i < quantidadeAlunos; i++) {
+        if (listaAlunos[i]->id == id) {
+            return 1;  // Já existe um aluno com o mesmo ID
+        }
+    }
+    return 0;
+}
+
+// Função para importar CSV
 void importarCSV(alunoX *listaAlunos[30], int *quantidadeAlunos) {
     FILE *arquivo;
     arquivo = fopen("alunos.csv", "r");
@@ -345,32 +354,51 @@ void importarCSV(alunoX *listaAlunos[30], int *quantidadeAlunos) {
         return;
     }
 
-    // Ler os dados do arquivo CSV e adicionar alunos à lista
-    while (*quantidadeAlunos < 30 && fscanf(arquivo, "%d,%29[^,],%29[^,],%49[^,],%lf,%lf,%d\n", 
-           &listaAlunos[*quantidadeAlunos]->id, listaAlunos[*quantidadeAlunos]->nome, 
-           listaAlunos[*quantidadeAlunos]->sobrenome, listaAlunos[*quantidadeAlunos]->curso, 
-           &listaAlunos[*quantidadeAlunos]->presencaP, &listaAlunos[*quantidadeAlunos]->notaTotal, 
-           &listaAlunos[*quantidadeAlunos]->quantidadeNotas) == 7) {
-        
-        // Aloca memória para um novo alunoX
-        listaAlunos[*quantidadeAlunos] = malloc(sizeof(alunoX));
+    // Ler os dados dos alunos do arquivo CSV
+    while (*quantidadeAlunos < 30 && fscanf(arquivo, "%d,%49[^,],%49[^,],%49[^,],%lf,%lf,%d\n", 
+                  &listaAlunos[*quantidadeAlunos]->id, 
+                  listaAlunos[*quantidadeAlunos]->nome, 
+                  listaAlunos[*quantidadeAlunos]->sobrenome, 
+                  listaAlunos[*quantidadeAlunos]->curso, 
+                  &listaAlunos[*quantidadeAlunos]->presencaP, 
+                  &listaAlunos[*quantidadeAlunos]->notaTotal, 
+                  &listaAlunos[*quantidadeAlunos]->quantidadeNotas) == 7) {
 
-        // Verifica se a alocação de memória foi bem-sucedida
-        if (listaAlunos[*quantidadeAlunos] == NULL) {
-            printf("Erro ao alocar memória para o aluno.\n");
-            fclose(arquivo);
-            return;
+        // Verifica se o aluno já está na lista, se sim, não adiciona na lista
+        if (!alunoEstaNaLista(listaAlunos, *quantidadeAlunos, listaAlunos[*quantidadeAlunos]->id)) {
+            // Alocando espaço para o próximo aluno
+            *quantidadeAlunos += 1;
+
+            // Verifica se ainda há espaço na lista
+            if (*quantidadeAlunos < 30) {
+                listaAlunos[*quantidadeAlunos] = malloc(sizeof(alunoX));
+                if (listaAlunos[*quantidadeAlunos] == NULL) {
+                    printf("Erro: Não foi possível alocar memória para o aluno.\n");
+                    fclose(arquivo);
+                    exit(1);
+                }
+            }
         }
-
-        (*quantidadeAlunos)++;
     }
 
     fclose(arquivo);
+
+    printf("Dados importados com sucesso! \n");
 }
 
+// Função de comparação para qsort
+int compararAlunos(const void *a, const void *b) {
+    alunoX *alunoA = *(alunoX **)a;
+    alunoX *alunoB = *(alunoX **)b;
 
+    return strcmp(alunoA->nome, alunoB->nome);
+}
 
+// Função para exportar os dados
 void exportarCSV(alunoX *listaAlunos[30], int quantidadeAlunos) {
+    // Organizar a lista em ordem alfabética, base, tamanho, tamanho em bytes, comparador
+    qsort(listaAlunos, quantidadeAlunos, sizeof(alunoX *), compararAlunos);
+
     FILE *arquivo;
     arquivo = fopen("alunos.csv", "w");
     if (arquivo == NULL) {
@@ -378,7 +406,12 @@ void exportarCSV(alunoX *listaAlunos[30], int quantidadeAlunos) {
         return;
     }
 
-    // Escrever os dados dos alunos no arquivo CSV
+    // Reatribuir IDs antes de exportar
+    for (int i = 0; i < quantidadeAlunos; i++) {
+        listaAlunos[i]->id = i + 1;  // Começar do ID 1
+    }
+
+    // Escrever os dados dos alunos organizados no arquivo CSV
     for (int i = 0; i < quantidadeAlunos; i++) {
         fprintf(arquivo, "%d,%s,%s,%s,%.2lf,%.2lf,%d\n", listaAlunos[i]->id, listaAlunos[i]->nome, 
                 listaAlunos[i]->sobrenome, listaAlunos[i]->curso, listaAlunos[i]->presencaP, 

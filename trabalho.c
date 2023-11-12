@@ -4,7 +4,14 @@ int main() {
     int escolha;
     int quantidadeAlunos = 0;
     alunoX *listaAlunos[30] = {NULL};
-
+    
+    // Alocando alunos na memoria
+    for (int i = 0; i < 30; i++) {
+        listaAlunos[i] = malloc(sizeof(alunoX));
+            if (listaAlunos[i] == NULL) {
+                printf("Erro: Não foi possível alocar memória para o aluno.\n");
+        }
+    }
     do {
         printf("\n\033[1;34m============================ MENU PRINCIPAL ============================\033[0m\n");
         printf("\033[1;36m[1]\033[0m Inserir um aluno\n");
