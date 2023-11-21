@@ -2,13 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct Nota {
-    //Notas especificas do aluno
-    double notaAtividadesComplementares;
-    double notaProvas;
-    double notaTrabalho;
-};
-
 struct Aluno {
     // ID auto incremental
     int id;
@@ -20,8 +13,7 @@ struct Aluno {
     // Curso do Aluno (Implementar uma diferenciação na hora das notas)
     char curso[50];
 
-    // Notas
-    struct Nota notas; // Struct onde estão as notas específicas
+    // NotaS
     double notaTotal;
 
     // Double notaProva, notaComplementar, notaTrabalho (A diferenciação na hora da nota)
@@ -118,31 +110,34 @@ void inserirNota(alunoX *listaAlunos[30], int quantidadeAlunos) {
                     case 1:
                         printf("Entre a nota de Atividades Complementares: ");
                         scanf("%lf", &novaNota);
-                        listaAlunos[i]->notas.notaAtividadesComplementares = novaNota; //Atribuindo a nova nota das Atividades Complementares
                         break;
                     case 2:
                         printf("Entre a nota de Provas: ");
                         scanf("%lf", &novaNota);
-                        listaAlunos[i]->notas.notaProvas = novaNota; //Atribuindo a nova nota das Provas
                         break;
                     case 3:
                         printf("Entre a nota de Trabalho: ");
                         scanf("%lf", &novaNota);
-                        listaAlunos[i]->notas.notaTrabalho = novaNota; //Atribuindo a nova nota dos Trabalhos
                         break;
                     default:
                         continue;
                 }
 
-                // Aumentando a quantidade de notas inseridas
-                listaAlunos[i]->quantidadeNotas++;
+                //Salvando a notaInserida, somando com a nota anterior
+
+                // Condicional responsável por limitar as notas a 100
+                if(listaAlunos[i]->notaTotal += novaNota >= 100){
+                    listaAlunos[i]->notaTotal = 100;
+                } else {
+
+                    listaAlunos[i]->notaTotal += novaNota;
+                    // Aumentando a quantidade de notas inseridas
+                    listaAlunos[i]->quantidadeNotas++;
+
+                }
 
             } while(escolha != 0);
 
-            // Calculando a nota total com base nas notas específicas
-            listaAlunos[i]->notaTotal = listaAlunos[i]->notas.notaAtividadesComplementares +
-                                         listaAlunos[i]->notas.notaProvas +
-                                         listaAlunos[i]->notas.notaTrabalho;
 
             alunoEncontrado = 1;
             break;
@@ -158,9 +153,9 @@ void imprimirAluno(alunoX *listaAlunos[30], int quantidadeAlunos) {
 
     // Formatando como tabela
     // Cabeçalho
-    printf("--------------------------------------------------------------------------------------------------------------------------\n");
-    printf("| %-4s | %-20s | %-15s | %-15s | %-15s | %-15s | %-15s |\n", "ID", "Nome", "Sobrenome", "Curso", "Presenca", "Nota Total", "Nota Media");
-    printf("--------------------------------------------------------------------------------------------------------------------------\n");
+    printf("-------------------------------------------------------------------------------------------------------\n");
+    printf("| %-4s | %-20s | %-15s | %-15s | %-15s | %-15s |\n", "ID", "Nome", "Sobrenome", "Curso", "Presenca", "Nota Total");
+    printf("-------------------------------------------------------------------------------------------------------\n");
 
     // Lista de alunos com a mesma regra do cabeçalho
     for(int i = 0; i < quantidadeAlunos; i++) {
@@ -172,15 +167,13 @@ void imprimirAluno(alunoX *listaAlunos[30], int quantidadeAlunos) {
         
         // Conferindo se alguma nota foi inserida
         if (listaAlunos[i]->quantidadeNotas > 0) {
-            printf(" %-15.2lf |", listaAlunos[i]->notaTotal);
-            printf(" %-15.2lf |\n", listaAlunos[i]->notaTotal / 3); // Alterando o valor pra 3 pois é um valor fixo
+            printf(" %-15.2lf |\n", listaAlunos[i]->notaTotal);
         } else {
-            printf(" %-15s |", "N/A"); // Usando um traço para indicar notas não disponíveis
-            printf(" %-15s |\n", "N/A");
+            printf(" %-15s |\n", "N/A"); // Usando um traço para indicar notas não disponíveis
         }
     }
 
-    printf("--------------------------------------------------------------------------------------------------------------------------\n");
+    printf("-------------------------------------------------------------------------------------------------------\n");
 }
 
 void buscarAluno(alunoX *listaAlunos[30], int quantidadeAlunos){
@@ -324,7 +317,7 @@ void OrdemNotas(alunoX *listaAlunos[30], int quantidadeAlunos) {
             if(copiaAlunos[i]->notaTotal < 60){ // Verficando a situação do aluno pela sua nota total
                 printf(" %-15s |\n", "Insatifatoria");
             } else {
-                printf(" %-15s %-2.2lf |\n", "Satisfatoria", copiaAlunos[i]->notaTotal / copiaAlunos[i]->quantidadeNotas);
+                printf(" %-15s |\n", "Satisfatoria");
             }
         } else {
             printf(" %-15s |", "N/A"); // Usando um traço para indicar notas não disponíveis
