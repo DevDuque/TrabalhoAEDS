@@ -21,17 +21,21 @@ int main() {
         printf("\033[1;36m[5]\033[0m Situacao dos alunos\n");
         printf("\033[1;36m[6]\033[0m Importar lista\n");
         printf("\033[1;36m[7]\033[0m Exportar lista\n");
+        printf("\033[1;36m[8]\033[0m Apagar Aluno\n");
         printf("\033[1;31m[0]\033[0m Sair do programa\n");
         scanf("%d", &escolha);
 
         switch (escolha) {
             case 1:
                 inserirAluno(listaAlunos, &quantidadeAlunos);
+
+                system("clear");
             break;
             
             case 2:
                 if(!isEmpty(quantidadeAlunos)){
                     imprimirAluno(listaAlunos, quantidadeAlunos);
+                    system("clear");
                 } else {
                     printf("A lista de alunos esta vazia!\n");
                 }
@@ -40,6 +44,7 @@ int main() {
             case 3:
                 if(!isEmpty(quantidadeAlunos)){
                     buscarAluno(listaAlunos, quantidadeAlunos);
+                    system("clear");
                 } else {
                     printf("A lista de alunos esta vazia!\n");
                 }
@@ -48,6 +53,7 @@ int main() {
             case 4:
                 if(!isEmpty(quantidadeAlunos)) {
                     inserirNota(listaAlunos, quantidadeAlunos);
+                    system("clear");
                 } else {
                     printf("A lista de alunos esta vazia! \n");
                 }
@@ -55,7 +61,8 @@ int main() {
             
             case 5:
                 if(!isEmpty(quantidadeAlunos)) {
-                    OrdemNotas(listaAlunos, quantidadeAlunos);
+                    ordemNotas(listaAlunos, quantidadeAlunos);
+                    system("clear");
                 } else {
                     printf("A lista de alunos esta vazia! \n");
                 }
@@ -63,15 +70,25 @@ int main() {
 
             case 6:
                     importarCSV(listaAlunos, &quantidadeAlunos);
+                    system("clear");
             break;
 
             case 7: 
                 if(!isEmpty(quantidadeAlunos)) {
                     exportarCSV(listaAlunos, quantidadeAlunos);
+                    system("clear");
                 } else {
                     printf("A lista de alunos esta vazia! \n");
                 }
             break;
+
+            case 8: 
+                if(!isEmpty(quantidadeAlunos)) {
+                    deletarAluno(listaAlunos, &quantidadeAlunos);
+                    system("clear");
+                } else {
+                    printf("A lista de alunos esta vazia! \n");
+                }
 
         }
     } while (escolha != 0);
@@ -80,5 +97,7 @@ int main() {
     for (int i = 0; i < quantidadeAlunos; i++) {
         free(listaAlunos[i]);
     }
+
+    system("clear");
     return 0;
 }

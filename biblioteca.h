@@ -30,7 +30,7 @@ void inserirAluno(alunoX *listaAlunos[30], int *quantidadeAlunos);
 void inserirNota(alunoX *listaAlunos[30], int quantidadeAlunos);
 void imprimirAluno(alunoX *listaAlunos[30], int quantidadeAlunos);
 void buscarAluno(alunoX *listaAlunos[30], int quantidadeAlunos);
-void OrdemNotas(alunoX *listaAlunos[30], int quantidadeAlunos);
+void ordemNotas(alunoX *listaAlunos[30], int quantidadeAlunos);
 int isEmpty(int quantidadeAlunos);
 void importarCSV(alunoX *listaAlunos[30], int *quantidadeAlunos);
 void exportarCSV(alunoX *listaAlunos[30], int quantidadeAlunos);
@@ -271,7 +271,7 @@ int isEmpty(int quantidadeAlunos){
 }
 
 // Criando uma cópia temporária para continuar em ordem alfabética quando for salva/carregada.
-void OrdemNotas(alunoX *listaAlunos[30], int quantidadeAlunos) {
+void ordemNotas(alunoX *listaAlunos[30], int quantidadeAlunos) {
     // Criar uma cópia temporária da lista de alunos
     alunoX *copiaAlunos[30];
     for (int i = 0; i < quantidadeAlunos; i++) {
@@ -414,4 +414,37 @@ void exportarCSV(alunoX *listaAlunos[30], int quantidadeAlunos) {
     fclose(arquivo);
 
     printf("Arquivo criado com sucesso! \n");
+}
+
+void deletarAluno(alunoX *listaAlunos[30], int *quantidadeAlunos) {
+    char nome[30];
+
+    printf("Digite o nome do aluno que deseja deletar: ");
+    scanf("%s", nome);
+
+    int alunoEncontrado = 0;
+
+    // Procurar o aluno pelo nome
+    for (int i = 0; i < *quantidadeAlunos; i++) {
+        if (strcmp(listaAlunos[i]->nome, nome) == 0) {
+            // Liberar a memória alocada para o aluno
+            free(listaAlunos[i]);
+
+            // Remover o aluno da lista
+            for (int j = i; j < *quantidadeAlunos - 1; j++) {
+                listaAlunos[j] = listaAlunos[j + 1];
+            }
+
+            // Decrementar a quantidade de alunos
+            (*quantidadeAlunos)--;
+
+            printf("Aluno %s deletado com sucesso.\n", nome);
+            alunoEncontrado = 1;
+            break;
+        }
+    }
+
+    if (!alunoEncontrado) {
+        printf("Aluno(a) %s nao encontrado!\n", nome);
+    }
 }
