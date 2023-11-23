@@ -126,11 +126,10 @@ void inserirNota(alunoX *listaAlunos[30], int quantidadeAlunos) {
                 //Salvando a notaInserida, somando com a nota anterior
 
                 // Condicional responsável por limitar as notas a 100
-                if(listaAlunos[i]->notaTotal += novaNota >= 100){
+                listaAlunos[i]->notaTotal += novaNota;
+                if(listaAlunos[i]->notaTotal >= 100){
                     listaAlunos[i]->notaTotal = 100;
                 } else {
-
-                    listaAlunos[i]->notaTotal += novaNota;
                     // Aumentando a quantidade de notas inseridas
                     listaAlunos[i]->quantidadeNotas++;
 
