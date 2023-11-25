@@ -35,7 +35,6 @@ int main() {
             case 2:
                 if(!isEmpty(quantidadeAlunos)){
                     imprimirAluno(listaAlunos, quantidadeAlunos);
-                    system("clear");
                 } else {
                     printf("A lista de alunos esta vazia!\n");
                 }
@@ -44,7 +43,8 @@ int main() {
             case 3:
                 if(!isEmpty(quantidadeAlunos)){
                     buscarAluno(listaAlunos, quantidadeAlunos);
-                    system("clear");
+                    
+                    system("clear");                
                 } else {
                     printf("A lista de alunos esta vazia!\n");
                 }
@@ -53,6 +53,7 @@ int main() {
             case 4:
                 if(!isEmpty(quantidadeAlunos)) {
                     inserirNota(listaAlunos, quantidadeAlunos);
+                    
                     system("clear");
                 } else {
                     printf("A lista de alunos esta vazia! \n");
@@ -62,7 +63,6 @@ int main() {
             case 5:
                 if(!isEmpty(quantidadeAlunos)) {
                     ordemNotas(listaAlunos, quantidadeAlunos);
-                    system("clear");
                 } else {
                     printf("A lista de alunos esta vazia! \n");
                 }
@@ -70,21 +70,25 @@ int main() {
 
             case 6:
                     importarCSV(listaAlunos, &quantidadeAlunos);
-                    system("clear");
+
             break;
 
             case 7: 
                 if(!isEmpty(quantidadeAlunos)) {
                     exportarCSV(listaAlunos, quantidadeAlunos);
-                    system("clear");
+
                 } else {
                     printf("A lista de alunos esta vazia! \n");
+
                 }
             break;
 
             case 8: 
                 if(!isEmpty(quantidadeAlunos)) {
+                    imprimirAluno(listaAlunos, quantidadeAlunos);
+                    
                     deletarAluno(listaAlunos, &quantidadeAlunos);
+
                     system("clear");
                 } else {
                     printf("A lista de alunos esta vazia! \n");
@@ -99,5 +103,6 @@ int main() {
     }
 
     system("clear");
+    
     return 0;
 }

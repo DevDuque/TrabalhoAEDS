@@ -158,7 +158,7 @@ void imprimirAluno(alunoX *listaAlunos[30], int quantidadeAlunos) {
 
     // Lista de alunos com a mesma regra do cabeçalho
     for(int i = 0; i < quantidadeAlunos; i++) {
-        printf("| %-4d | %-20s | %-15s | %-15s | %-15.2lf |", 
+        printf("| %-4d | %-20s | %-15s | %-15s | %-15.2lf%% |", 
         listaAlunos[i]->id, 
         listaAlunos[i]->nome, listaAlunos[i]->sobrenome,
         listaAlunos[i]->curso, 
@@ -205,7 +205,7 @@ void buscarAluno(alunoX *listaAlunos[30], int quantidadeAlunos){
                 for(int i = 0; i < quantidadeAlunos; i++){
                     if(strcmp(listaAlunos[i]->nome, nome) == 0){
 
-                        printf("| %-4d | %-20s | %-15s | %-15s | %-15.2lf |\n", 
+                        printf("| %-4d | %-20s | %-15s | %-15s | %-15.2lf%% |\n", 
                         listaAlunos[i]->id, 
                         listaAlunos[i]->nome, listaAlunos[i]->sobrenome,
                         listaAlunos[i]->curso, 
@@ -242,7 +242,7 @@ void buscarAluno(alunoX *listaAlunos[30], int quantidadeAlunos){
                 for(int i = 0; i < quantidadeAlunos; i++){
                     if(strcmp(listaAlunos[i]->sobrenome, sobrenome) == 0){
 
-                        printf("| %-4d | %-20s | %-15s | %-15s | %-15.2lf |\n", 
+                        printf("| %-4d | %-20s | %-15s | %-15s | %-15.2lf%% |\n", 
                         listaAlunos[i]->id, 
                         listaAlunos[i]->nome, listaAlunos[i]->sobrenome,
                         listaAlunos[i]->curso, 
@@ -304,7 +304,7 @@ void ordemNotas(alunoX *listaAlunos[30], int quantidadeAlunos) {
 
     // Lista de alunos com a mesma regra do cabeçalho
     for(int i = 0; i < quantidadeAlunos; i++) {
-        printf("| %-4d | %-20s | %-15s | %-15s | %-15.2lf |", 
+        printf("| %-4d | %-20s | %-15s | %-15s | %-15.2lf%% |", 
         copiaAlunos[i]->id, 
         copiaAlunos[i]->nome, copiaAlunos[i]->sobrenome,
         copiaAlunos[i]->curso, 
@@ -325,6 +325,7 @@ void ordemNotas(alunoX *listaAlunos[30], int quantidadeAlunos) {
     }
 
     printf("--------------------------------------------------------------------------------------------------------------------------\n");
+
 }
 
 // Função para conferir se o ID já existe na lista
@@ -376,6 +377,7 @@ void importarCSV(alunoX *listaAlunos[30], int *quantidadeAlunos) {
     fclose(arquivo);
 
     printf("Dados importados com sucesso! \n");
+
 }
 
 // Função de comparação para qsort
@@ -426,6 +428,8 @@ void deletarAluno(alunoX *listaAlunos[30], int *quantidadeAlunos) {
     // Procurar o aluno pelo nome
     for (int i = 0; i < *quantidadeAlunos; i++) {
         if (strcmp(listaAlunos[i]->nome, nome) == 0) {
+            int idDeletado = listaAlunos[i]->id; // Salva o ID do aluno a ser deletado
+
             // Liberar a memória alocada para o aluno
             free(listaAlunos[i]);
 
@@ -436,6 +440,11 @@ void deletarAluno(alunoX *listaAlunos[30], int *quantidadeAlunos) {
 
             // Decrementar a quantidade de alunos
             (*quantidadeAlunos)--;
+
+            // Rearranjar os IDs
+            for (int j = i; j < *quantidadeAlunos; j++) {
+                listaAlunos[j]->id = j + 1;
+            }
 
             printf("Aluno %s deletado com sucesso.\n", nome);
             alunoEncontrado = 1;
