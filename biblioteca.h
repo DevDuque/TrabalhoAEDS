@@ -328,11 +328,11 @@ void ordemNotas(alunoX *listaAlunos[30], int quantidadeAlunos) {
 
 }
 
-// Função para conferir se o ID já existe na lista
-int alunoEstaNaLista(alunoX *listaAlunos[30], int quantidadeAlunos, int id) {
+// Função para conferir se o ID e o nome já existem na lista
+int alunoEstaNaLista(alunoX *listaAlunos[30], int quantidadeAlunos, int id, char *nome) {
     for (int i = 0; i < quantidadeAlunos; i++) {
-        if (listaAlunos[i]->id == id) {
-            return 1;  // Já existe um aluno com o mesmo ID
+        if (listaAlunos[i]->id == id && strcmp(listaAlunos[i]->nome, nome) == 0) {
+            return 1;  // Já existe um aluno com o mesmo ID e nome
         }
     }
     return 0;
@@ -357,10 +357,10 @@ void importarCSV(alunoX *listaAlunos[30], int *quantidadeAlunos) {
                   &listaAlunos[*quantidadeAlunos]->notaTotal, 
                   &listaAlunos[*quantidadeAlunos]->quantidadeNotas) == 7) {
 
-        // Verifica se o aluno já está na lista, se sim, não adiciona na lista
-        if (!alunoEstaNaLista(listaAlunos, *quantidadeAlunos, listaAlunos[*quantidadeAlunos]->id)) {
+        // Verifica se o aluno já está na lista pelo ID e nome
+        if (!alunoEstaNaLista(listaAlunos, *quantidadeAlunos, listaAlunos[*quantidadeAlunos]->id, listaAlunos[*quantidadeAlunos]->nome)) {
             // Alocando espaço para o próximo aluno
-            *quantidadeAlunos += 1;
+            (*quantidadeAlunos)++;
 
             // Verifica se ainda há espaço na lista
             if (*quantidadeAlunos < 30) {
@@ -376,8 +376,12 @@ void importarCSV(alunoX *listaAlunos[30], int *quantidadeAlunos) {
 
     fclose(arquivo);
 
-    printf("Dados importados com sucesso! \n");
+    // Reorganiza os IDs após a importação
+    for (int i = 0; i < *quantidadeAlunos; i++) {
+        listaAlunos[i]->id = i + 1;
+    }
 
+    printf("Dados importados com sucesso! \n");
 }
 
 // Função de comparação para qsort
