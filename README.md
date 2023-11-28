@@ -1,4 +1,9 @@
-# TrabalhoAEDS por Pedro e Davih
+# TrabalhoAEDS por Pedro H. Nunes e Davih G. Duque
+
+<p align="center">
+  <img src="./public/Capa1.png" alt="Form page image" />
+  <img alt="License" src="https://img.shields.io/static/v1?label=license&message=MIT&color=49AA26&labelColor=000000">
+</p>
 
 ## Gerenciador de Notas por Pedro Henrique Nunes e Davih Duque
 Nossa proposta seria criar um sistema de gerenciamentos de notas,  que será projetado para auxiliar os professores em escolas, faculdades ou cursos. Esse software terá diversas ferramentas,  permitindo não apenas o registro de notas, mas também o acompanhamento do desempenho dos alunos em uma determinada disciplina.  Com esse programa seria possível cadastrar alunos,  registrar notas de cada aluno em nessa disciplina, como atividades complementares, prova ou trabalhos. Calcular a média de cada aluno na disciplina, para descobrir quem está em uma situação mais favorável e quem está com mais dificuldades. Visualizar as notas de cada aluno em uma lista .Obter as classificações dos alunos, classificando-os em ordem decrescente. Exportar os dados, para serem salvos, e possuir essas informações de forma física caso necessário. Além da edição de notas, que podem ser atualizadas a qualquer momento.
