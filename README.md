@@ -1,4 +1,8 @@
-# TrabalhoAEDS por Pedro H. Nunes e Davih G. Duque
+<h1 align="center">
+  <a href="./public/GerenciadorNotas.pdf" target="_blank"> Gerenciador de Notas </a>
+</h1>
+
+<p align="center"> Clique acima para ver o relatório da aplicação</p>
 
 <p align="center">
   <img src="./public/Capa1.png" alt="Form page image" />
